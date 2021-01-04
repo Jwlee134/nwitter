@@ -1,19 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
-import { authService } from "../base";
 import Auth from "../routes/Auth";
 import Home from "../routes/Home";
+import Profile from "../routes/Profile";
+import Navigation from "./Navigation";
 
-const Router = () => {
-  const [loggedIn, setLoggedIn] = useState(authService.currentUser);
+interface IProps {
+  loggedIn: boolean;
+}
 
+const Router = ({ loggedIn }: IProps) => {
   return (
     <HashRouter>
+      {loggedIn && <Navigation />}
       <Switch>
         {loggedIn ? (
           <>
             <Route exact path="/">
               <Home />
+            </Route>
+            <Route exact path="/profile">
+              <Profile />
             </Route>
           </>
         ) : (
