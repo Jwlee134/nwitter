@@ -5,32 +5,31 @@ import Home from "../routes/Home";
 import Profile from "../routes/Profile";
 import Navigation from "./Navigation";
 
-interface IProps {
+interface Props {
   loggedIn: boolean;
+  user: User;
 }
 
-const Router = ({ loggedIn }: IProps) => {
-  return (
-    <HashRouter>
-      {loggedIn && <Navigation />}
-      <Switch>
-        {loggedIn ? (
-          <>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route exact path="/profile">
-              <Profile />
-            </Route>
-          </>
-        ) : (
+const Router = ({ loggedIn, user }: Props) => (
+  <HashRouter>
+    {loggedIn && <Navigation />}
+    <Switch>
+      {loggedIn ? (
+        <>
           <Route exact path="/">
-            <Auth />
+            <Home user={user} />
           </Route>
-        )}
-      </Switch>
-    </HashRouter>
-  );
-};
+          <Route exact path="/profile">
+            <Profile />
+          </Route>
+        </>
+      ) : (
+        <Route exact path="/">
+          <Auth />
+        </Route>
+      )}
+    </Switch>
+  </HashRouter>
+);
 
 export default Router;
