@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { dbService } from "../base";
+import { dbService, storageService } from "../base";
 
 interface Props {
   nweet: NweetObj;
@@ -12,10 +12,13 @@ const Nweet = ({ nweet, isCreator }: Props) => {
 
   const toggleEditing = () => setEditing((prev) => !prev);
 
-  const onDeleteClick = () => {
+  const onDeleteClick = async () => {
     const ok = window.confirm("Are you sure?");
     if (ok) {
-      dbService.doc(`nweets/${nweet.id}`).delete();
+      await dbService.doc(`nweets/${nweet.id}`).delete();
+      if (nweet.attachmentUrl !== "") {
+        await storageService.refFromURL(nweet.attachmentUrl).delete();
+      }
     }
   };
 
@@ -53,6 +56,9 @@ const Nweet = ({ nweet, isCreator }: Props) => {
       ) : (
         <>
           <h4>{nweet.text}</h4>
+          {nweet.attachmentUrl && (
+            <img src={nweet.attachmentUrl} width="50px" height="50px" alt="" />
+          )}
           {isCreator && (
             <>
               <button onClick={onDeleteClick}>Delete</button>

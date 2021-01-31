@@ -2,6 +2,7 @@ interface Nweet {
   text: string;
   createdAt: number;
   creatorId: string;
+  attachmentUrl: string;
 }
 
 interface NweetObj extends Nweet {
