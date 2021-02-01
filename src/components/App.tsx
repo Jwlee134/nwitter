@@ -1,32 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { authService } from "../base";
+import React, { useContext } from "react";
+import { UserContext } from "../context/User";
 
 import Router from "./Router";
 
 const App = () => {
-  const [initialized, setInitialized] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [userObj, setUserObj] = useState<User | null>(null);
-
-  useEffect(() => {
-    authService.onAuthStateChanged((user) => {
-      if (user) {
-        setUserObj(user as User);
-        setLoggedIn(true);
-      } else {
-        setLoggedIn(false);
-      }
-      setInitialized(true);
-    });
-  }, []);
+  const { initialized } = useContext(UserContext);
 
   return (
     <>
-      {initialized ? (
-        <Router loggedIn={loggedIn} user={userObj as User} />
-      ) : (
-        "Initializing..."
-      )}
+      {initialized ? <Router /> : "Initializing..."}
       <footer>&copy; Nwitter {new Date().getFullYear()}</footer>
     </>
   );

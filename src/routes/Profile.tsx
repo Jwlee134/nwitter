@@ -1,17 +1,22 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
-import { authService } from "../base";
+import useProfile from "../hooks/useProfile";
 
 const Profile = () => {
-  const history = useHistory();
-
-  const onLogOut = () => {
-    authService.signOut();
-    history.push("/");
-  };
+  const { onLogOut, onChange, onSubmit, userObj, newName } = useProfile();
 
   return (
     <>
+      {userObj?.displayName !== null && (
+        <form onSubmit={onSubmit}>
+          <input
+            type="text"
+            placeholder="Display Name"
+            onChange={onChange}
+            value={newName as string}
+          />
+          <input type="submit" value="Save" />
+        </form>
+      )}
       <button onClick={onLogOut}>Sign Out</button>
     </>
   );

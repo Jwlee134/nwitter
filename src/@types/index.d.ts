@@ -9,8 +9,13 @@ interface NweetObj extends Nweet {
   id: string;
 }
 
+interface Args {
+  displayName?: string | null;
+  photoURL?: string | null;
+}
+
 interface User {
   uid: string;
-  displayName: string;
-  email: string;
+  displayName: string | null;
+  updateProfile: (args: Args) => Promise<void>;
 }

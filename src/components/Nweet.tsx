@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { dbService, storageService } from "../base";
+import React from "react";
+import useNweet from "../hooks/useNweet";
 
 interface Props {
   nweet: NweetObj;
@@ -7,35 +7,14 @@ interface Props {
 }
 
 const Nweet = ({ nweet, isCreator }: Props) => {
-  const [editing, setEditing] = useState(false);
-  const [newNweet, setNewNweet] = useState(nweet.text);
-
-  const toggleEditing = () => setEditing((prev) => !prev);
-
-  const onDeleteClick = async () => {
-    const ok = window.confirm("Are you sure?");
-    if (ok) {
-      await dbService.doc(`nweets/${nweet.id}`).delete();
-      if (nweet.attachmentUrl !== "") {
-        await storageService.refFromURL(nweet.attachmentUrl).delete();
-      }
-    }
-  };
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setEditing(false);
-    dbService.doc(`nweets/${nweet.id}`).update({
-      text: newNweet,
-    });
-  };
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { value },
-    } = e;
-    setNewNweet(value);
-  };
+  const {
+    editing,
+    onSubmit,
+    toggleEditing,
+    onDeleteClick,
+    onChange,
+    newNweet,
+  } = useNweet(nweet);
 
   return (
     <div>

@@ -1,35 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
+import { UserContext } from "../context/User";
 import Auth from "../routes/Auth";
 import Home from "../routes/Home";
 import Profile from "../routes/Profile";
 import Navigation from "./Navigation";
 
-interface Props {
-  loggedIn: boolean;
-  user: User;
-}
+const Router = () => {
+  const { loggedIn } = useContext(UserContext);
 
-const Router = ({ loggedIn, user }: Props) => (
-  <HashRouter>
-    {loggedIn && <Navigation />}
-    <Switch>
-      {loggedIn ? (
-        <>
+  return (
+    <HashRouter>
+      {loggedIn && <Navigation />}
+      <Switch>
+        {loggedIn ? (
+          <>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route exact path="/profile">
+              <Profile />
+            </Route>
+          </>
+        ) : (
           <Route exact path="/">
-            <Home user={user} />
+            <Auth />
           </Route>
-          <Route exact path="/profile">
-            <Profile />
-          </Route>
-        </>
-      ) : (
-        <Route exact path="/">
-          <Auth />
-        </Route>
-      )}
-    </Switch>
-  </HashRouter>
-);
+        )}
+      </Switch>
+    </HashRouter>
+  );
+};
 
 export default Router;
