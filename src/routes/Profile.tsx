@@ -1,5 +1,20 @@
 import React from "react";
+import styled from "styled-components";
 import useProfile from "../hooks/useProfile";
+
+const Form = styled.form`
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+`;
+
+const Button = styled.button`
+  width: 100%;
+  height: 30px;
+  border-radius: 50px;
+  background-color: #ee533a;
+  color: #ffffff;
+`;
 
 const Profile = () => {
   const { onLogOut, onChange, onSubmit, userObj, newName } = useProfile();
@@ -7,7 +22,7 @@ const Profile = () => {
   return (
     <>
       {userObj?.displayName !== null && (
-        <form onSubmit={onSubmit}>
+        <Form onSubmit={onSubmit}>
           <input
             type="text"
             placeholder="Display Name"
@@ -15,9 +30,9 @@ const Profile = () => {
             value={newName as string}
           />
           <input type="submit" value="Save" />
-        </form>
+        </Form>
       )}
-      <button onClick={onLogOut}>Sign Out</button>
+      <Button onClick={onLogOut}>Sign Out</Button>
     </>
   );
 };

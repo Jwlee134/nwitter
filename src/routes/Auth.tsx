@@ -1,5 +1,51 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 import { authService, firebaseInstance } from "../base";
+
+import { faGoogle, faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGhost } from "@fortawesome/free-solid-svg-icons";
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Error = styled.div`
+  color: #ee533a;
+  font-size: 12px;
+  margin: 5px 0px;
+  align-self: center;
+`;
+
+const Text = styled.div`
+  color: grey;
+  text-decoration: underline;
+  margin: 10px 0px;
+  font-size: 14px;
+  cursor: pointer;
+`;
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+`;
+
+const Button = styled.button`
+  width: 48%;
+  background-color: #ffffff;
+`;
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -31,9 +77,7 @@ const Auth = () => {
     }
   };
 
-  const toggleAccount = () => {
-    return setNewAccount(newAccount ? false : true);
-  };
+  const toggleAccount = () => setNewAccount(newAccount ? false : true);
 
   const onSocialclick = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -51,8 +95,14 @@ const Auth = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <Container>
+      <FontAwesomeIcon
+        icon={faTwitter}
+        color={"#04AAFF"}
+        size="3x"
+        style={{ marginBottom: 30 }}
+      />
+      <Form onSubmit={handleSubmit}>
         <input
           name="email"
           type="email"
@@ -69,19 +119,21 @@ const Auth = () => {
           onChange={handleChange}
           required
         />
+        <Error>{error}</Error>
         <input type="submit" value={newAccount ? "Sign Up" : "Sign In"} />
-        {error}
-      </form>
-      <div onClick={toggleAccount}>{newAccount ? "Sign In" : "Sign Up"}</div>
-      <div>
-        <button name="google" onClick={onSocialclick}>
+      </Form>
+      <Text onClick={toggleAccount}>{newAccount ? "Sign In" : "Sign Up"}</Text>
+      <ButtonContainer>
+        <Button name="google" onClick={onSocialclick}>
           Continue with Google
-        </button>
-        <button name="anonymous" onClick={onSocialclick}>
+          <FontAwesomeIcon icon={faGoogle} style={{ marginLeft: 6 }} />
+        </Button>
+        <Button name="anonymous" onClick={onSocialclick}>
           Continue with Anonymous
-        </button>
-      </div>
-    </div>
+          <FontAwesomeIcon icon={faGhost} style={{ marginLeft: 6 }} />
+        </Button>
+      </ButtonContainer>
+    </Container>
   );
 };
 
